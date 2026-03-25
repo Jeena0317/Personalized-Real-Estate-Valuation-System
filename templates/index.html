@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Estate Price Predictor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(to right, #eef2f3, #dfe9f3);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: 700;
+            color: #555;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            margin-top: 5px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 15px;
+            margin-top: 25px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(to right, #007BFF, #0056b3);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            opacity: 0.9;
+        }
+
+        .result-card {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 12px;
+            background: #f0f8ff;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .price {
+            font-size: 28px;
+            font-weight: bold;
+            color: #007BFF;
+        }
+
+        .confidence {
+            margin-top: 10px;
+            font-size: 18px;
+            color: #444;
+        }
+
+        .section-title {
+            margin-top: 40px;
+            text-align: center;
+            color: #333;
+        }
+
+        .feature-img {
+            margin-top: 15px;
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                margin: 20px;
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🏠 Real Estate Price Predictor</h1>
+
+        <form method="POST">
+
+            <label>Bathrooms</label>
+            <input type="number" name="bathroomcnt" required>
+
+            <label>Bedrooms</label>
+            <input type="number" name="bedroomcnt" required>
+
+            <label>Finished Area (sqft)</label>
+            <input type="number" name="calculatedfinishedsquarefeet" required>
+
+            <label>Lot Size (sqft)</label>
+            <input type="number" name="lotsizesquarefeet" required>
+
+            <label>Year Built</label>
+            <input type="number" name="yearbuilt" required>
+
+            <label>Garage Cars</label>
+            <input type="number" name="garagecarcnt">
+
+            <label>Tax Amount ($)</label>
+            <input type="number" name="taxamount">
+
+            <label>Latitude</label>
+            <input type="number" name="latitude" step="0.000001" required>
+
+            <label>Longitude</label>
+            <input type="number" name="longitude" step="0.000001" required>
+
+            <input type="submit" value="Predict Price">
+        </form>
+
+        {% if prediction %}
+        <div class="result-card">
+            <div class="price">
+                ${{ prediction | round(2) }}
+            </div>
+
+            <div class="confidence">
+                Confidence Range:<br>
+                ${{ lower | round(2) }} - ${{ upper | round(2) }}
+            </div>
+        </div>
+        {% endif %}
+
+        <h2 class="section-title">Feature Importance</h2>
+        <img class="feature-img" src="{{ url_for('static', filename='feature_importance.png') }}">
+    </div>
+</body>
+</html>
